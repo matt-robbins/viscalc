@@ -9,8 +9,8 @@
 import UIKit
 
 protocol NumberDelegate: class {
-    func numberSet(_ view: Number, setTens tens: Int, setOnes ones: Int)
-    func addNumber(_ view: Number)
+    func numberSet(_ view: NumberView, setTens tens: Int, setOnes ones: Int)
+    func addNumber(_ view: NumberView)
 }
 
 class NumberBackgroundView: UIView {
@@ -30,7 +30,7 @@ class NumberBackgroundView: UIView {
 
 
 @IBDesignable
-class Number: UIStackView {
+class NumberView: UIStackView {
 
     /*
     // Only override draw() if you perform custom drawing.
