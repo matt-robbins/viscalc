@@ -9,8 +9,8 @@
 import UIKit
 
 protocol NumberDelegate: class {
-    func numberSet(_ view: NumberView, setTens tens: Int, setOnes ones: Int)
-    func addNumber(_ view: NumberView)
+    func numberSet(_ view: NumberVisualView, setTens tens: Int, setOnes ones: Int)
+    func addNumber(_ view: NumberVisualView)
 }
 
 class NumberBackgroundView: UIView {
@@ -28,9 +28,8 @@ class NumberBackgroundView: UIView {
     
 }
 
-
 @IBDesignable
-class NumberView: UIStackView {
+class NumberVisualView: UIStackView {
 
     /*
     // Only override draw() if you perform custom drawing.
@@ -46,7 +45,9 @@ class NumberView: UIStackView {
     
     func setup()
     {
-        self.axis = .horizontal
+        axis = .horizontal
+        distribution = .fill
+        
         for k in 0 ..< N {
             let v = TenView()
             
@@ -59,7 +60,7 @@ class NumberView: UIStackView {
                 v.isHidden = false
             }
             
-            self.addArrangedSubview(v)
+            addArrangedSubview(v)
         }
         
         //var b = CGRect(x: bounds.minX, y: bounds.minY, width: bounds.width, height: 50)
@@ -67,8 +68,6 @@ class NumberView: UIStackView {
         subview.backgroundColor = UIColor.clear
         subview.autoresizingMask = [.flexibleWidth,.flexibleHeight]
         insertSubview(subview, at: 0)
-        
-        self.distribution = UIStackView.Distribution.fill
     }
     
     override init(frame: CGRect) {
@@ -95,7 +94,7 @@ class NumberView: UIStackView {
         var count = -1
         
         for k in 0 ..< N {
-            if (self.arrangedSubviews[k].isHidden == false)
+            if (arrangedSubviews[k].isHidden == false)
             {
                 count += 1
             }
@@ -116,7 +115,7 @@ class NumberView: UIStackView {
             return
         }
         
-        let ones = self.arrangedSubviews.last! as! TenView
+        let ones = arrangedSubviews.last! as! TenView
         
         ones.n = Int(10 * (1 - touches.first!.location(in: self).y / self.frame.height))
         
@@ -146,10 +145,10 @@ class NumberView: UIStackView {
             })
             return
         }
-        if (touches.first!.location(in: self).x < self.frame.width - self.arrangedSubviews.last!.frame.width)
+        if (touches.first!.location(in: self).x < self.frame.width - arrangedSubviews.last!.frame.width)
         {
             self.isAnimating = true
-            let count = (self.frame.width - touches.first!.location(in: self).x) / self.arrangedSubviews.last!.frame.width
+            let count = (self.frame.width - touches.first!.location(in: self).x) / arrangedSubviews.last!.frame.width
             var c: CGFloat = 1
             UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
                 for k in 0 ..< self.arrangedSubviews.count {
@@ -191,4 +190,39 @@ class NumberView: UIStackView {
 //        (self.arrangedSubviews.last! as! TenView).n = -1
     }
         
+}
+
+
+@IBDesignable
+class NumberView: UIStackView {
+    let N = 10
+    
+    weak var delegate: NumberDelegate? {
+        didSet {
+            visView.delegate = delegate
+        }
+    }
+    
+    var visView = NumberVisualView()
+    var digitView = UIView()
+    
+    func setup()
+    {
+        axis = .vertical
+        distribution = .fillEqually
+        
+        addArrangedSubview(visView)
+        insertArrangedSubview(digitView, at: 0)
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+        return
+    }
 }
