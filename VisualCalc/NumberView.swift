@@ -9,8 +9,12 @@
 import UIKit
 
 protocol NumberDelegate: class {
-    func numberSet(_ view: NumberVisualView, setTens tens: Int, setOnes ones: Int)
     func addNumber(_ view: NumberVisualView)
+}
+
+protocol NumberTextDelegate: class {
+    func numberSet(_ view: NumberVisualView, setNumber number: Int)
+    func didFinishEntering(_ view: NumberVisualView)
 }
 
 class NumberBackgroundView: UIView {
@@ -39,31 +43,33 @@ class NumberVisualView: UIStackView {
     }
     */
     
-    let N = 10
+    var N = 10
+    var number = 0 {
+        didSet {
+            textDelegate?.numberSet(self, setNumber: number)
+        }
+    }
     
-    weak var delegate: NumberDelegate?
+    weak var addDelegate: NumberDelegate?
+    weak var textDelegate: NumberTextDelegate?
+    var ones: TenView? = nil
     
     func setup()
     {
         axis = .horizontal
         distribution = .fill
         
-        for k in 0 ..< N {
-            let v = TenView()
-            
-            v.n = 10
-            if (k < N) { v.isHidden = true }
-            
-            if (k == N-1)
-            {
-                v.n = -1
-                v.isHidden = false
-            }
-            
+        for _ in 0 ..< N {
+            let v = TenView(base: N)
+            v.n = N
+            v.isHidden = true
             addArrangedSubview(v)
         }
         
-        //var b = CGRect(x: bounds.minX, y: bounds.minY, width: bounds.width, height: 50)
+        ones = arrangedSubviews.last! as? TenView
+        ones!.n = -1
+        ones!.isHidden = false
+        
         let subview = NumberBackgroundView(frame: bounds)
         subview.backgroundColor = UIColor.clear
         subview.autoresizingMask = [.flexibleWidth,.flexibleHeight]
@@ -81,94 +87,79 @@ class NumberVisualView: UIStackView {
         return
     }
     
-    override func layoutSubviews() {
-        
+    init(base: Int)
+    {
+        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        N = base
+        setup()
     }
     
     
     private var isAnimating = false
     
-    
-    private func setNumber()
-    {
-        var count = -1
-        
-        for k in 0 ..< N {
-            if (arrangedSubviews[k].isHidden == false)
-            {
-                count += 1
-            }
-        }
-        
-        let n = (subviews.last! as! TenView).n + 1
-        
-        delegate?.numberSet(self, setTens: Int(count*10), setOnes: n)
-        
-    }
-    
     private func touchesStartedorMoved(_ touches: Set<UITouch>, with event: UIEvent?)
     {
-        setNumber()
-        
-        if (isAnimating)
-        {
-            return
-        }
-        
         let ones = arrangedSubviews.last! as! TenView
         
-        ones.n = Int(10 * (1 - touches.first!.location(in: self).y / self.frame.height))
+        ones.n = Int(CGFloat(N) * (1 - touches.first!.location(in: self).y / self.frame.height))
+        let tens = Int((touches.first!.location(in: self).x) / ones.frame.width)
         
-        if (touches.first!.location(in: self).x > self.frame.width)
-        {
-            self.isAnimating = true
-            let count = (touches.first!.location(in: self).x - self.frame.width) / self.arrangedSubviews.last!.frame.width
-            
-            var c: CGFloat = 0
-            UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-                var k = self.arrangedSubviews.count-2
-                while k > 0 {
-                    k -= 1
-                    if (self.arrangedSubviews[k].isHidden)
-                    {
-                        self.arrangedSubviews[k].isHidden = false
-                        c += 1
-                        if (c >= count)
-                        {
-                            break
-                        }
-                    }
-                }
-            }, completion: { (finished: Bool) in
-                self.isAnimating = false
-                self.setNumber()
-            })
-            return
-        }
-        if (touches.first!.location(in: self).x < self.frame.width - arrangedSubviews.last!.frame.width)
-        {
-            self.isAnimating = true
-            let count = (self.frame.width - touches.first!.location(in: self).x) / arrangedSubviews.last!.frame.width
-            var c: CGFloat = 1
-            UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-                for k in 0 ..< self.arrangedSubviews.count {
-                    if (!self.arrangedSubviews[k].isHidden)
-                    {
-                        self.arrangedSubviews[k].isHidden = true
-                        c += 1
-                        if (c >= count)
-                        {
-                            break
-                        }
-                    }
-                }
-            }, completion: { (finished: Bool) in
-                self.isAnimating = false
-                self.setNumber()
-            })
-            return
-        }
+        number = tens * 10 + ones.n + 1
         
+        for k in 0 ..< self.N-1 {
+            self.arrangedSubviews[k].isHidden = k >= tens
+        }
+    
+//
+//
+//        if (touches.first!.location(in: self).x > self.frame.width)
+//        {
+//            self.isAnimating = true
+//            let count = (touches.first!.location(in: self).x - self.frame.width) / ones.frame.width
+//
+//            var c: CGFloat = 0
+//            UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
+//                var k = self.arrangedSubviews.count-1
+//                while k > 0 {
+//                    k -= 1
+//                    if (self.arrangedSubviews[k].isHidden)
+//                    {
+//                        self.arrangedSubviews[k].isHidden = false
+//                        c += 1
+//                        if (c >= count)
+//                        {
+//                            break
+//                        }
+//                    }
+//                }
+//            }, completion: { (finished: Bool) in
+//                self.isAnimating = false
+//            })
+//            return
+//        }
+//        if (touches.first!.location(in: self).x < self.frame.width - arrangedSubviews.last!.frame.width)
+//        {
+//            self.isAnimating = true
+//            let count = (self.frame.width - touches.first!.location(in: self).x) / ones.frame.width
+//            var c: CGFloat = 1
+//            UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
+//                for k in 0 ..< self.arrangedSubviews.count {
+//                    if (!self.arrangedSubviews[k].isHidden)
+//                    {
+//                        self.arrangedSubviews[k].isHidden = true
+//                        c += 1
+//                        if (c >= count)
+//                        {
+//                            break
+//                        }
+//                    }
+//                }
+//            }, completion: { (finished: Bool) in
+//                self.isAnimating = false
+//            })
+//            return
+//        }
+//
         
     }
     
@@ -181,7 +172,9 @@ class NumberVisualView: UIStackView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        delegate?.addNumber(self)
+        addDelegate?.addNumber(self)
+        textDelegate?.didFinishEntering(self)
+        //self.isUserInteractionEnabled = false
         
 //        // and reset the source view
 //        for k in 0 ..< self.arrangedSubviews.count - 1 {
@@ -192,27 +185,19 @@ class NumberVisualView: UIStackView {
         
 }
 
-
-@IBDesignable
-class NumberView: UIStackView {
-    let N = 10
+class DigitView: UIStackView {
     
-    weak var delegate: NumberDelegate? {
-        didSet {
-            visView.delegate = delegate
-        }
-    }
+    var tensLabel = UILabel()
+    var plusLabel = UILabel()
+    var onesLabel = UILabel()
+    var pad = UIView()
+    var B: Int = 10
     
-    var visView = NumberVisualView()
-    var digitView = UIView()
-    
-    func setup()
+    var editing: Bool = true
     {
-        axis = .vertical
-        distribution = .fillEqually
-        
-        addArrangedSubview(visView)
-        insertArrangedSubview(digitView, at: 0)
+        didSet {
+            
+        }
     }
     
     override init(frame: CGRect) {
@@ -224,5 +209,121 @@ class NumberView: UIStackView {
         super.init(coder: coder)
         setup()
         return
+    }
+    
+    func setup() {
+        addArrangedSubview(tensLabel)
+        addArrangedSubview(plusLabel)
+        addArrangedSubview(onesLabel)
+        addArrangedSubview(pad)
+        
+        pad.isHidden = true
+        
+        let font = UIFont.systemFont(ofSize: 34)
+        tensLabel.text = "10"
+        plusLabel.text = "+"
+        tensLabel.isHidden = true
+        plusLabel.isHidden = true
+        onesLabel.text = "0"
+        onesLabel.textColor = UIColor.red
+        
+        tensLabel.font = font
+        onesLabel.font = font
+        plusLabel.font = font
+        onesLabel.adjustsFontSizeToFitWidth = true
+        
+        alignment = .bottom
+        return
+    }
+    
+    func setNumber(_ number: Int)
+    {
+        var tens = 10 * (number / B)
+        if (number == B*B)
+        {
+            tens = 100
+        }
+        if (!editing)
+        {
+            tens /= B
+        }
+        let ones = number % B
+        
+        //UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
+            self.tensLabel.isHidden = tens <= 0
+            self.plusLabel.isHidden = tens <= 0 || !editing
+//
+            self.tensLabel.text = "\(tens)"
+            self.onesLabel.text = "\(ones)"
+        //}, completion: nil)
+        
+    }
+    
+}
+
+@IBDesignable
+class NumberView: UIStackView, NumberTextDelegate {
+    
+    var N: Int = 0
+    var B: Int = 10
+    
+    var editing = true
+    
+    weak var delegate: NumberDelegate? {
+        didSet {
+            visView.addDelegate = delegate
+        }
+    }
+    
+    var visView: NumberVisualView
+    var digitView = DigitView()
+    
+    func setup()
+    {
+        digitView.B = B
+        axis = .vertical
+        distribution = .fillEqually
+        
+        addArrangedSubview(visView)
+        insertArrangedSubview(digitView, at: 0)
+        digitView.backgroundColor = UIColor.red
+        digitView.distribution = .equalSpacing
+        visView.textDelegate = self
+    }
+    
+    override init(frame: CGRect) {
+        visView = NumberVisualView(base: B)
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init(coder: NSCoder) {
+        visView = NumberVisualView(base: B)
+        super.init(coder: coder)
+        setup()
+    }
+    
+    func numberSet(_ view: NumberVisualView, setNumber number: Int) {
+        print(number)
+        N = number
+        digitView.setNumber(number)
+    }
+    
+    func didFinishEntering(_ view: NumberVisualView) {
+        self.digitView.layer.removeAllAnimations()
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: [], animations: {
+        self.digitView.plusLabel.isHidden = true
+        self.digitView.distribution = .fill
+        self.digitView.tensLabel.text = "\(self.N/self.B)"
+        self.digitView.pad.isHidden = false
+        self.digitView.alignment = .center
+        }, completion: { (finished: Bool) in
+            self.visView.isUserInteractionEnabled = false
+            self.digitView.plusLabel.isHidden = true
+        })
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print(self.hitTest(touches.first!.location(in: self), with: event))
     }
 }
