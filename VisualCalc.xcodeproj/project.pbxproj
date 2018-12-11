@@ -17,7 +17,6 @@
 		C9AD13C221AD9E9A0081F5A3 /* VisualCalcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD13C121AD9E9A0081F5A3 /* VisualCalcTests.swift */; };
 		C9AD13CD21AD9E9A0081F5A3 /* VisualCalcUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD13CC21AD9E9A0081F5A3 /* VisualCalcUITests.swift */; };
 		C9AD13DB21ADA0D80081F5A3 /* TenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD13DA21ADA0D80081F5A3 /* TenView.swift */; };
-		C9AD13DD21AF595F0081F5A3 /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD13DC21AF595F0081F5A3 /* Number.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,7 +53,6 @@
 		C9AD13CC21AD9E9A0081F5A3 /* VisualCalcUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualCalcUITests.swift; sourceTree = "<group>"; };
 		C9AD13CE21AD9E9A0081F5A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9AD13DA21ADA0D80081F5A3 /* TenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenView.swift; sourceTree = "<group>"; };
-		C9AD13DC21AF595F0081F5A3 /* Number.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,7 +107,6 @@
 				C9AD13AB21AD9E970081F5A3 /* ViewController.swift */,
 				C9AD13AD21AD9E970081F5A3 /* Main.storyboard */,
 				C973D76F21B1CC9D004DAC7A /* EmitterView.swift */,
-				C9AD13DC21AF595F0081F5A3 /* Number.swift */,
 				C9AD13DA21ADA0D80081F5A3 /* TenView.swift */,
 				C9AD13B321AD9E9A0081F5A3 /* Assets.xcassets */,
 				C9AD13B521AD9E9A0081F5A3 /* LaunchScreen.storyboard */,
@@ -273,7 +270,6 @@
 				C9AD13B221AD9E970081F5A3 /* VisualCalc.xcdatamodeld in Sources */,
 				C9AD13DB21ADA0D80081F5A3 /* TenView.swift in Sources */,
 				C9AD13AA21AD9E970081F5A3 /* AppDelegate.swift in Sources */,
-				C9AD13DD21AF595F0081F5A3 /* Number.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
