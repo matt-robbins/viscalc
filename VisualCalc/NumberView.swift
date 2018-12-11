@@ -29,7 +29,6 @@ class NumberBackgroundView: UIView {
             context.strokePath()
         }
     }
-    
 }
 
 @IBDesignable
@@ -109,58 +108,6 @@ class NumberVisualView: UIStackView {
         for k in 0 ..< self.N-1 {
             self.arrangedSubviews[k].isHidden = k >= tens
         }
-    
-//
-//
-//        if (touches.first!.location(in: self).x > self.frame.width)
-//        {
-//            self.isAnimating = true
-//            let count = (touches.first!.location(in: self).x - self.frame.width) / ones.frame.width
-//
-//            var c: CGFloat = 0
-//            UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-//                var k = self.arrangedSubviews.count-1
-//                while k > 0 {
-//                    k -= 1
-//                    if (self.arrangedSubviews[k].isHidden)
-//                    {
-//                        self.arrangedSubviews[k].isHidden = false
-//                        c += 1
-//                        if (c >= count)
-//                        {
-//                            break
-//                        }
-//                    }
-//                }
-//            }, completion: { (finished: Bool) in
-//                self.isAnimating = false
-//            })
-//            return
-//        }
-//        if (touches.first!.location(in: self).x < self.frame.width - arrangedSubviews.last!.frame.width)
-//        {
-//            self.isAnimating = true
-//            let count = (self.frame.width - touches.first!.location(in: self).x) / ones.frame.width
-//            var c: CGFloat = 1
-//            UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-//                for k in 0 ..< self.arrangedSubviews.count {
-//                    if (!self.arrangedSubviews[k].isHidden)
-//                    {
-//                        self.arrangedSubviews[k].isHidden = true
-//                        c += 1
-//                        if (c >= count)
-//                        {
-//                            break
-//                        }
-//                    }
-//                }
-//            }, completion: { (finished: Bool) in
-//                self.isAnimating = false
-//            })
-//            return
-//        }
-//
-        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
