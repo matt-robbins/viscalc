@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C973D77021B1CC9D004DAC7A /* EmitterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973D76F21B1CC9D004DAC7A /* EmitterView.swift */; };
+		C98230A021C031B0001562B4 /* NumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982309F21C031B0001562B4 /* NumberView.swift */; };
 		C9AD13AA21AD9E970081F5A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD13A921AD9E970081F5A3 /* AppDelegate.swift */; };
 		C9AD13AC21AD9E970081F5A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD13AB21AD9E970081F5A3 /* ViewController.swift */; };
 		C9AD13AF21AD9E970081F5A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9AD13AD21AD9E970081F5A3 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		C973D76F21B1CC9D004DAC7A /* EmitterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmitterView.swift; sourceTree = "<group>"; };
+		C982309F21C031B0001562B4 /* NumberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberView.swift; sourceTree = "<group>"; };
 		C9AD13A621AD9E970081F5A3 /* VisualCalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualCalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9AD13A921AD9E970081F5A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9AD13AB21AD9E970081F5A3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				C9AD13A921AD9E970081F5A3 /* AppDelegate.swift */,
+				C982309F21C031B0001562B4 /* NumberView.swift */,
 				C9AD13AB21AD9E970081F5A3 /* ViewController.swift */,
 				C9AD13AD21AD9E970081F5A3 /* Main.storyboard */,
 				C973D76F21B1CC9D004DAC7A /* EmitterView.swift */,
@@ -270,6 +273,7 @@
 				C9AD13B221AD9E970081F5A3 /* VisualCalc.xcdatamodeld in Sources */,
 				C9AD13DB21ADA0D80081F5A3 /* TenView.swift in Sources */,
 				C9AD13AA21AD9E970081F5A3 /* AppDelegate.swift in Sources */,
+				C98230A021C031B0001562B4 /* NumberView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

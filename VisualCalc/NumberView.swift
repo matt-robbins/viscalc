@@ -43,9 +43,26 @@ class NumberVisualView: UIStackView {
     */
     
     var N = 10
-    var number = 0 {
+    var number: Int = 0 {
         didSet {
+            print("setting number to \(number)")
             textDelegate?.numberSet(self, setNumber: number)
+            
+            let ones = arrangedSubviews.last! as! TenView
+            ones.n = number % N
+            if (ones.n == 0)
+            {
+                ones.n = 10
+            }
+            
+            let tens = (self.number-1) / self.N
+            
+            //UIView.animate(withDuration: 0.01, animations: {
+                for k in 0 ..< self.N-1 {
+                    self.arrangedSubviews[k].isHidden = k >= tens
+                }
+            //})
+            
         }
     }
     
@@ -59,7 +76,7 @@ class NumberVisualView: UIStackView {
         distribution = .fill
         
         for _ in 0 ..< N {
-            let v = TenView(base: N)
+            let v = TenView()
             v.n = N
             v.isHidden = true
             addArrangedSubview(v)
@@ -96,40 +113,40 @@ class NumberVisualView: UIStackView {
     
     private var isAnimating = false
     
-    private func touchesStartedorMoved(_ touches: Set<UITouch>, with event: UIEvent?)
-    {
-        let ones = arrangedSubviews.last! as! TenView
-        
-        ones.n = Int(CGFloat(N) * (1 - touches.first!.location(in: self).y / self.frame.height))
-        let tens = Int((touches.first!.location(in: self).x) / ones.frame.width)
-        
-        number = tens * 10 + ones.n + 1
-        
-        for k in 0 ..< self.N-1 {
-            self.arrangedSubviews[k].isHidden = k >= tens
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        return touchesStartedorMoved(touches, with: event)
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        return touchesStartedorMoved(touches, with: event)
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        addDelegate?.addNumber(self)
-        textDelegate?.didFinishEntering(self)
-        //self.isUserInteractionEnabled = false
-        
-//        // and reset the source view
-//        for k in 0 ..< self.arrangedSubviews.count - 1 {
-//            self.arrangedSubviews[k].isHidden = true
+//    private func touchesStartedorMoved(_ touches: Set<UITouch>, with event: UIEvent?)
+//    {
+//        let ones = arrangedSubviews.last! as! TenView
+//
+//        ones.n = Int(CGFloat(N) * (1 - touches.first!.location(in: self).y / self.frame.height))
+//        let tens = Int((touches.first!.location(in: self).x) / ones.frame.width)
+//
+//        number = tens * 10 + ones.n + 1
+//
+//        for k in 0 ..< self.N-1 {
+//            self.arrangedSubviews[k].isHidden = k >= tens
 //        }
-//        (self.arrangedSubviews.last! as! TenView).n = -1
-    }
-        
+//    }
+//    
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        return touchesStartedorMoved(touches, with: event)
+//    }
+//
+//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        return touchesStartedorMoved(touches, with: event)
+//    }
+//
+//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        addDelegate?.addNumber(self)
+//        textDelegate?.didFinishEntering(self)
+//        //self.isUserInteractionEnabled = false
+//
+////        // and reset the source view
+////        for k in 0 ..< self.arrangedSubviews.count - 1 {
+////            self.arrangedSubviews[k].isHidden = true
+////        }
+////        (self.arrangedSubviews.last! as! TenView).n = -1
+//    }
+    
 }
 
 class DigitView: UIStackView {
@@ -270,7 +287,11 @@ class NumberView: UIStackView, NumberTextDelegate {
         })
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print(self.hitTest(touches.first!.location(in: self), with: event))
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        print(self.hitTest(touches.first!.location(in: self), with: event))
+//    }
+//    
+//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        print(self.hitTest(touches.first!.location(in: self), with: event))
+//    }
 }
