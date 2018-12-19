@@ -43,35 +43,9 @@ class NumberVisualView: UIStackView {
     */
     
     var N = 10
-    var oldTens = 0
-    
-    var number: Int = 0 {
+    var number = 0 {
         didSet {
-            print("setting number to \(number)")
             textDelegate?.numberSet(self, setNumber: number)
-            
-            let ones = arrangedSubviews.last! as! TenView
-            ones.n = number % N
-            if (ones.n == 0)
-            {
-                ones.n = 10
-            }
-            
-            let tens = (self.number-1) / self.N
-            
-            if (!isAnimating)
-            {
-                isAnimating = true
-                UIView.animate(withDuration: 0.1, animations: {
-                    for k in 0 ..< self.N-1 {
-                        self.arrangedSubviews[k].isHidden = k >= tens
-                    }
-                }, completion: { finished in
-                    self.isAnimating = false
-                    self.oldTens = tens
-                })
-            }
-            
         }
     }
     
@@ -125,46 +99,37 @@ class NumberVisualView: UIStackView {
     private func touchesStartedorMoved(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         let ones = arrangedSubviews.last! as! TenView
-
+        
         ones.n = Int(CGFloat(N) * (1 - touches.first!.location(in: self).y / self.frame.height))
         let tens = Int((touches.first!.location(in: self).x) / ones.frame.width)
-
-        number = tens * 10 + ones.n + 1
-
-//        if (!isAnimating)
-//        {
-            isAnimating = true
-//            UIView.animate(withDuration: 1.0, animations: {
-//                for k in 0 ..< self.N-1 {
-//                    self.arrangedSubviews[k].isHidden = k >= tens
-//                }
-//            }, completion: { finished in
-//                self.isAnimating = false
-//            })
         
-//        }
+        number = tens * 10 + ones.n + 1
+        
+        for k in 0 ..< self.N-1 {
+            self.arrangedSubviews[k].isHidden = k >= tens
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         return touchesStartedorMoved(touches, with: event)
     }
-
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         return touchesStartedorMoved(touches, with: event)
     }
-
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         addDelegate?.addNumber(self)
         textDelegate?.didFinishEntering(self)
         //self.isUserInteractionEnabled = false
-
+        
 //        // and reset the source view
 //        for k in 0 ..< self.arrangedSubviews.count - 1 {
 //            self.arrangedSubviews[k].isHidden = true
 //        }
 //        (self.arrangedSubviews.last! as! TenView).n = -1
     }
-    
+        
 }
 
 class DigitView: UIStackView {
@@ -305,11 +270,7 @@ class NumberView: UIStackView, NumberTextDelegate {
         })
     }
     
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        print(self.hitTest(touches.first!.location(in: self), with: event))
-//    }
-//    
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        print(self.hitTest(touches.first!.location(in: self), with: event))
-//    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print(self.hitTest(touches.first!.location(in: self), with: event))
+    }
 }

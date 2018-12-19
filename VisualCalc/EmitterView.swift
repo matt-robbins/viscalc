@@ -8,9 +8,16 @@
 
 import UIKit
 
+protocol NewNumberDelegate: class {
+    func numberSet(_ view: EmitterView, setNumber number: Int)
+}
+
 @IBDesignable
 class EmitterView: UIView {
-
+    var N: Int = 10
+    
+    var delegate: NewNumberDelegate?
+    
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         
@@ -33,6 +40,7 @@ class EmitterView: UIView {
     private func setup()
     {
         //layer.addSublayer(CALayer())
+        self.backgroundColor = UIColor.clear
     }
     
 //    override func layoutSublayers(of layer: CALayer) {
@@ -54,4 +62,23 @@ class EmitterView: UIView {
         setup()
     }
     
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let ones = Int(CGFloat(N) * (1 - touches.first!.location(in: self).y / frame.height))
+//        print(ones)
+//        //        let tens = Int((touches.first!.location(in: self).x) / ones.frame.width)
+//    }
+//    
+//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        
+//        let ones = min(N - 1, Int(CGFloat(N) * (1 - touches.first!.location(in: self).y / frame.height))) + 1
+//        print(ones)
+//        let tens = Int((touches.first!.location(in: self).x) / frame.width)
+//        
+//        //print(tens*N + ones + 1)
+//        if (delegate != nil)
+//        {
+//            delegate?.numberSet(self, setNumber: tens*N + ones)
+//        }
+//        //print(ones)
+//    }
 }

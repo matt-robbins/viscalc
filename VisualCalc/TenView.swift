@@ -123,14 +123,14 @@ class TenView: UIStackView {
             return
         }
         var activeColor = UIColor.red
-        if (n >= N-1)
+        if (n > N-1)
         {
             activeColor = UIColor.black
         }
         
         for k in 0 ..< self.N {
             //self.ones[k].layer.cornerRadius = self.frame.width / 2
-            if (k <= self.n)
+            if (k < self.n)
             {
                 self.ones[k].setColor(color: activeColor.cgColor)
             }
