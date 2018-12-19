@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="landscape">
+    <device id="ipad9_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,76 +15,35 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="VisualCalc" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="gkJ-Qq-N2J">
-                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                                <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jtA-34-CTv">
-                                        <rect key="frame" x="0.0" y="0.0" width="667" height="187.5"/>
-                                        <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="D8r-fZ-QGH">
-                                                <rect key="frame" x="0.0" y="0.0" width="49.5" height="187.5"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hBW-aa-Lgu" userLabel="Tens">
-                                                        <rect key="frame" x="0.0" y="0.0" width="10.5" height="187.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="91v-AT-DwK" userLabel="Plus">
-                                                        <rect key="frame" x="20.5" y="0.0" width="11" height="187.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vEW-Vf-iSg" userLabel="Ones">
-                                                        <rect key="frame" x="41.5" y="0.0" width="8" height="187.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="0.83054577460000001" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="D8r-fZ-QGH" firstAttribute="leading" secondItem="jtA-34-CTv" secondAttribute="leading" id="PFb-bv-KJJ"/>
-                                            <constraint firstAttribute="bottom" secondItem="D8r-fZ-QGH" secondAttribute="bottom" id="SIb-Vm-qkh"/>
-                                            <constraint firstItem="D8r-fZ-QGH" firstAttribute="top" secondItem="jtA-34-CTv" secondAttribute="top" id="mdo-pU-wJ6"/>
-                                        </constraints>
-                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hWS-BZ-0ir">
-                                        <rect key="frame" x="0.0" y="187.5" width="667" height="187.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="748"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mb0-R6-ndH" customClass="EmitterView" customModule="VisualCalc" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="19" height="187.5"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mf4-K8-N4N" customClass="EmitterView" customModule="VisualCalc" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="374" width="37.5" height="374"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" secondItem="Mb0-R6-ndH" secondAttribute="height" multiplier="1:10" id="5s1-Uu-JX5"/>
+                                                    <constraint firstAttribute="width" secondItem="Mf4-K8-N4N" secondAttribute="height" multiplier="1:10" id="XoY-WC-nsC"/>
                                                 </constraints>
                                             </view>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="jnB-kD-GwL">
-                                                <rect key="frame" x="0.0" y="0.0" width="667" height="187.5"/>
-                                                <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VZI-an-Tab" userLabel="Number" customClass="Number" customModule="VisualCalc" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="19" height="187.5"/>
-                                                    </stackView>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8AL-6p-wQY">
-                                                        <rect key="frame" x="49" y="0.0" width="618" height="187.5"/>
-                                                    </view>
-                                                </subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="31" translatesAutoresizingMaskIntoConstraints="NO" id="jnB-kD-GwL" customClass="NumberStackView" customModule="VisualCalc" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="1024" height="748"/>
                                             </stackView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="Mb0-R6-ndH" firstAttribute="leading" secondItem="hWS-BZ-0ir" secondAttribute="leading" id="9Ww-Oa-75E"/>
-                                            <constraint firstItem="jnB-kD-GwL" firstAttribute="leading" secondItem="hWS-BZ-0ir" secondAttribute="leading" id="GgL-5h-Lqx"/>
-                                            <constraint firstItem="jnB-kD-GwL" firstAttribute="top" secondItem="hWS-BZ-0ir" secondAttribute="top" id="cfb-VB-oM9"/>
-                                            <constraint firstAttribute="bottom" secondItem="Mb0-R6-ndH" secondAttribute="bottom" id="lFT-ro-3cD"/>
-                                            <constraint firstItem="Mb0-R6-ndH" firstAttribute="top" secondItem="hWS-BZ-0ir" secondAttribute="top" id="r4N-4j-1Dj"/>
-                                            <constraint firstAttribute="trailing" secondItem="jnB-kD-GwL" secondAttribute="trailing" id="w2v-Oj-3KA"/>
-                                            <constraint firstAttribute="bottom" secondItem="jnB-kD-GwL" secondAttribute="bottom" id="z0U-RC-3uo"/>
+                                            <constraint firstAttribute="bottom" secondItem="jnB-kD-GwL" secondAttribute="bottom" id="5ER-0i-xED"/>
+                                            <constraint firstAttribute="trailing" secondItem="jnB-kD-GwL" secondAttribute="trailing" id="A5w-ut-aNK"/>
+                                            <constraint firstAttribute="bottom" secondItem="Mf4-K8-N4N" secondAttribute="bottom" id="Aed-3D-48j"/>
+                                            <constraint firstItem="Mf4-K8-N4N" firstAttribute="height" secondItem="hWS-BZ-0ir" secondAttribute="height" multiplier="0.5" id="QQB-uF-Nz5"/>
+                                            <constraint firstItem="jnB-kD-GwL" firstAttribute="leading" secondItem="hWS-BZ-0ir" secondAttribute="leading" id="cBm-aC-mft"/>
+                                            <constraint firstItem="Mf4-K8-N4N" firstAttribute="leading" secondItem="hWS-BZ-0ir" secondAttribute="leading" id="nnI-be-Dd5"/>
+                                            <constraint firstItem="jnB-kD-GwL" firstAttribute="top" secondItem="hWS-BZ-0ir" secondAttribute="top" id="vZI-OA-AuX"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -100,16 +59,13 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="emitterView" destination="Mb0-R6-ndH" id="KGo-1h-w1s"/>
-                        <outlet property="numberInput" destination="VZI-an-Tab" id="qT7-HH-Jcc"/>
-                        <outlet property="onesLabel" destination="vEW-Vf-iSg" id="3Th-Ow-Fye"/>
-                        <outlet property="plusLabel" destination="91v-AT-DwK" id="GQb-5p-wzz"/>
+                        <outlet property="emitterView" destination="Mf4-K8-N4N" id="jy1-tn-HwJ"/>
                         <outlet property="sumStack" destination="jnB-kD-GwL" id="ZWX-nT-S2I"/>
-                        <outlet property="tensLabel" destination="hBW-aa-Lgu" id="LVW-Ed-EJN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="29.882812499999996" y="50"/>
         </scene>
     </scenes>
 </document>
