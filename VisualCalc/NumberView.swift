@@ -10,7 +10,9 @@ import UIKit
 
 protocol NumberDelegate: class {
     func addNumber(_ view: NumberVisualView)
-    func dragNumber(_ view: NumberVisualView, point: CGPoint)
+    func dragMove(_ view: NumberView, point: CGPoint)
+    func dragStart(_ view: NumberView, point: CGPoint)
+    func dragEnd(_ view: NumberView, point: CGPoint)
 }
 
 protocol NumberTextDelegate: class {
@@ -135,7 +137,7 @@ class NumberVisualView: UIStackView {
         {
             return touchesStartedorMoved(touches, with: event)
         }
-        addDelegate?.dragNumber(self, point: touches.first!.location(in: window))
+        addDelegate?.dragStart(self.superview! as! NumberView, point: touches.first!.location(in: window))
         
     }
     
@@ -145,7 +147,7 @@ class NumberVisualView: UIStackView {
             return touchesStartedorMoved(touches, with: event)
         }
         
-        addDelegate?.dragNumber(self, point: touches.first!.location(in: window))
+        addDelegate?.dragMove(self.superview! as! NumberView, point: touches.first!.location(in: window))
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -153,7 +155,10 @@ class NumberVisualView: UIStackView {
         {
             addDelegate?.addNumber(self)
             textDelegate?.didFinishEntering(self)
+            return
         }
+        
+        addDelegate?.dragEnd(self.superview! as! NumberView, point: touches.first!.location(in: window))
         //self.isUserInteractionEnabled = false
         
 //        // and reset the source view
@@ -317,6 +322,17 @@ class NumberView: UIStackView, NumberTextDelegate {
             self.visView.editing = false
             self.digitView.plusLabel.isHidden = true
         })
+    }
+    
+    var isSelected: Bool = false {
+        didSet {
+            
+            visView.subviews[0].layer.borderColor = UIColor.red.cgColor
+            //visView.subviews[0].layer.shadowColor = UIColor.red.cgColor
+            visView.subviews[0].layer.cornerRadius = 5
+            //visView.subviews[0].layer.shadowOpacity = isSelected ? 1.0 : 0.0
+            visView.subviews[0].layer.borderWidth = isSelected ? 5 : 0
+        }
     }
     
 //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

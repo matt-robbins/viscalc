@@ -61,44 +61,82 @@ class NumberStackView: UIStackView, NumberDelegate, NewNumberDelegate {
         }, completion: nil)
     }
     
-    func dragNumber(_ view: NumberVisualView, point: CGPoint) {
-        let nv = view.superview!
-        let w = nv.frame.width
-        let h = nv.frame.height
+    func dragStart(_ view: NumberView, point: CGPoint) {
+        UIView.animate(withDuration: 0.1, animations: {
+            view.isHidden = true
+        })
+        view.isHidden = false
+        self.removeArrangedSubview(view)
+        superview?.addSubview(view)
+        superview?.bringSubviewToFront(view)
+        view.layer.position.y = 10
         
-        var y = nv.layer.position.y
+        let w = view.frame.width
+        let h = view.frame.height
+        print("hi!!!!!")
         
-//        nv.addConstraint(NSLayoutConstraint(item: nv,
-//                                              attribute: .width,
-//                                              relatedBy: .equal,
-//                                              toItem: nil,
-//                                              attribute: .width,
-//                                              multiplier: 1.0,
-//                                              constant: w))
-//
-//        nv.addConstraint(NSLayoutConstraint(item: nv,
-//                                            attribute: .height,
-//                                            relatedBy: .equal,
-//                                            toItem: nil,
-//                                            attribute: .height,
-//                                            multiplier: 1.0,
-//                                            constant: h))
+//        view.addConstraint(NSLayoutConstraint(item: view,
+//                                                      attribute: .width,
+//                                                      relatedBy: .equal,
+//                                                      toItem: nil,
+//                                                      attribute: .width,
+//                                                      multiplier: 0.9,
+//                                                      constant: w*0.9))
         
-        if (superview?.subviews.index(of: nv) != nil)
-        {
-            superview?.addSubview(nv)
-            superview?.bringSubviewToFront(nv)
-            nv.layer.position.y = 10
-        }
-//        var p = nv.layer.position
-//        p.x = point.x
-//        p.y = point.y
+        view.addConstraint(NSLayoutConstraint(item: view,
+                                                    attribute: .height,
+                                                    relatedBy: .equal,
+                                                    toItem: nil,
+                                                    attribute: .height,
+                                                    multiplier: 0.9,
+                                                    constant: h))
+        dragMove(view, point: point)
+    }
+    
+    func dragMove(_ view: NumberView, point: CGPoint) {
+        let y = view.layer.position.y
+    
         var p = point
         p.y = y
-        nv.layer.position = p
+        view.layer.position = p
         
+        print(point)
         
+        for v in self.arrangedSubviews {
+            print(v)
+            let nv = v as? NumberView
+            
+            if (nv != nil)
+            {
+                nv!.isSelected = v.frame.contains(point)
+            }
+        }
         
+        print(self.arrangedSubviews.count)
+    }
+    
+    func dragEnd(_ view: NumberView, point: CGPoint) {
+        
+        var ix = 1
+        for v in self.arrangedSubviews[0...self.arrangedSubviews.count-2] {
+            print(v.frame.minX)
+            if (point.x > v.frame.maxX)
+            {
+                ix = arrangedSubviews.index(of: v)! + 1
+            }
+            let nv = v as? NumberView
+            if (nv != nil)
+            {
+                nv?.isSelected = false
+            }
+        }
+        
+        view.isHidden = true
+        UIView.animate(withDuration: 0.1, animations: {
+            view.removeConstraint(view.constraints[0])
+            self.insertArrangedSubview(view, at: ix)
+            view.isHidden = false
+        })
     }
     
     func numberSet(_ view: EmitterView, setNumber number: Int) {
