@@ -10,6 +10,7 @@ import UIKit
 
 protocol NumberDelegate: class {
     func addNumber(_ view: NumberVisualView)
+    func dragNumber(_ view: NumberVisualView, point: CGPoint)
 }
 
 protocol NumberTextDelegate: class {
@@ -28,6 +29,10 @@ class NumberBackgroundView: UIView {
             context.addLine(to: CGPoint(x: bounds.width, y: bounds.height/2))
             context.strokePath()
         }
+    }
+    
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        return false
     }
 }
 
@@ -52,6 +57,9 @@ class NumberVisualView: UIStackView {
     weak var addDelegate: NumberDelegate?
     weak var textDelegate: NumberTextDelegate?
     var ones: TenView? = nil
+    var space: UIView? = nil
+    
+    var editing = true
     
     func setup()
     {
@@ -64,6 +72,18 @@ class NumberVisualView: UIStackView {
             v.isHidden = true
             addArrangedSubview(v)
         }
+        
+        space = UIView()
+        space!.isHidden = true
+        
+        space!.addConstraint(NSLayoutConstraint(item: space!,
+                                               attribute: .height,
+                                               relatedBy: .equal,
+                                               toItem: space!,
+                                               attribute: .width,
+                                               multiplier: 10.0 / 1.0,
+                                               constant: 0))
+
         
         ones = arrangedSubviews.last! as? TenView
         ones!.n = -1
@@ -100,10 +120,10 @@ class NumberVisualView: UIStackView {
     {
         let ones = arrangedSubviews.last! as! TenView
         
-        ones.n = Int(CGFloat(N) * (1 - touches.first!.location(in: self).y / self.frame.height))
+        ones.n = Int(CGFloat(N) * (1 - touches.first!.location(in: self).y / self.frame.height)) + 1
         let tens = Int((touches.first!.location(in: self).x) / ones.frame.width)
         
-        number = tens * 10 + ones.n + 1
+        number = tens * 10 + ones.n
         
         for k in 0 ..< self.N-1 {
             self.arrangedSubviews[k].isHidden = k >= tens
@@ -111,16 +131,29 @@ class NumberVisualView: UIStackView {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        return touchesStartedorMoved(touches, with: event)
+        if (editing)
+        {
+            return touchesStartedorMoved(touches, with: event)
+        }
+        addDelegate?.dragNumber(self, point: touches.first!.location(in: window))
+        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        return touchesStartedorMoved(touches, with: event)
+        if (editing)
+        {
+            return touchesStartedorMoved(touches, with: event)
+        }
+        
+        addDelegate?.dragNumber(self, point: touches.first!.location(in: window))
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        addDelegate?.addNumber(self)
-        textDelegate?.didFinishEntering(self)
+        if (editing)
+        {
+            addDelegate?.addNumber(self)
+            textDelegate?.didFinishEntering(self)
+        }
         //self.isUserInteractionEnabled = false
         
 //        // and reset the source view
@@ -138,6 +171,7 @@ class DigitView: UIStackView {
     var plusLabel = UILabel()
     var onesLabel = UILabel()
     var pad = UIView()
+    var fpad = UIView()
     var B: Int = 10
     
     var editing: Bool = true
@@ -159,12 +193,13 @@ class DigitView: UIStackView {
     }
     
     func setup() {
+        addArrangedSubview(fpad)
         addArrangedSubview(tensLabel)
         addArrangedSubview(plusLabel)
         addArrangedSubview(onesLabel)
         addArrangedSubview(pad)
         
-        pad.isHidden = true
+        //pad.isHidden = true
         
         let font = UIFont.systemFont(ofSize: 34)
         tensLabel.text = "10"
@@ -178,6 +213,14 @@ class DigitView: UIStackView {
         onesLabel.font = font
         plusLabel.font = font
         onesLabel.adjustsFontSizeToFitWidth = true
+        
+        self.addConstraint(NSLayoutConstraint(item: pad,
+                                              attribute: .width,
+                                              relatedBy: .equal,
+                                              toItem: fpad,
+                                              attribute: .width,
+                                              multiplier: 1.0,
+                                              constant: 0))
         
         alignment = .bottom
         return
@@ -211,10 +254,16 @@ class DigitView: UIStackView {
 @IBDesignable
 class NumberView: UIStackView, NumberTextDelegate {
     
-    var N: Int = 0
+    var N: Int = 0 {
+        didSet {
+            //digitView.setNumber(N)
+            //visView.number = N
+        }
+    }
     var B: Int = 10
     
     var editing = true
+    var splitting = false
     
     weak var delegate: NumberDelegate? {
         didSet {
@@ -233,7 +282,6 @@ class NumberView: UIStackView, NumberTextDelegate {
         
         addArrangedSubview(visView)
         insertArrangedSubview(digitView, at: 0)
-        digitView.backgroundColor = UIColor.red
         digitView.distribution = .equalSpacing
         visView.textDelegate = self
     }
@@ -265,12 +313,28 @@ class NumberView: UIStackView, NumberTextDelegate {
         self.digitView.pad.isHidden = false
         self.digitView.alignment = .center
         }, completion: { (finished: Bool) in
-            self.visView.isUserInteractionEnabled = false
+            self.editing = false
+            self.visView.editing = false
             self.digitView.plusLabel.isHidden = true
         })
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print(self.hitTest(touches.first!.location(in: self), with: event))
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let v = self.hitTest(touches.first!.location(in: self), with: event) as? DigitView
+//        
+//        if (v != nil)
+//        {
+//            splitting = true
+//        }
+//    }
+//    
+//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let v = self.hitTest(touches.first!.location(in: self), with: event) as? NumberView
+//        
+//        if (splitting && v != nil)
+//        {
+//            print("swiping!")
+//            
+//        }
+//    }
 }

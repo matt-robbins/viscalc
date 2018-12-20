@@ -8,11 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController, NumberDelegate {
+class ViewController: UIViewController {
     
     @IBOutlet weak var numberInput: NumberView!
     @IBOutlet weak var emitterView: EmitterView!
     
+    @IBOutlet weak var testButton: UIButton!
     @IBOutlet weak var sumStack: NumberStackView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,22 +21,35 @@ class ViewController: UIViewController, NumberDelegate {
         
         //numberInput = sumStack.arrangedSubviews[0]
         
-        emitterView.delegate = sumStack
+        //emitterView.delegate = sumStack
+        
+        //let v = sumStack.arrangedSubviews[0] as? NumberView
+        //v?.visView.addDelegate = self
+        
+        
     }
     
-    func addNumber(_ view: NumberVisualView) {
-        //let v = view.copy()
-        let n = NumberView()
-        n.delegate = self
-        //view.delegate = nil
-        n.isHidden = true
-        self.sumStack.insertArrangedSubview(n, at: 0)
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: [], animations: {
-            n.isHidden = false
-        }, completion: nil)
-
-    }
+//    func addNumber(_ view: NumberVisualView) {
+//        //let v = view.copy()
+//        let n = NumberView()
+//        n.delegate = self
+//        //view.delegate = nil
+//        n.isHidden = true
+//        self.sumStack.insertArrangedSubview(n, at: 0)
+//        UIView.animate(withDuration: 0.3, delay: 0.0, options: [], animations: {
+//            n.isHidden = false
+//        }, completion: nil)
+//
+//    }
     
+    @IBAction func reset(_ sender: UIButton) {
+        
+        let n = sumStack.arrangedSubviews.count
+        for k in 0 ... n-2
+        {
+            sumStack.removeArrangedSubview(sumStack.arrangedSubviews[k])
+        }
+    }
     
 }
 

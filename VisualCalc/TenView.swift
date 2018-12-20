@@ -15,6 +15,7 @@ class UnitView: UIView {
     {
         layer.addSublayer(l)
         l.backgroundColor = UIColor.clear.cgColor
+        layer.backgroundColor = UIColor.clear.cgColor
     }
     
     override func layoutSublayers(of layer: CALayer) {
@@ -39,6 +40,10 @@ class UnitView: UIView {
     func setColor(color: CGColor)
     {
         l.backgroundColor = color
+    }
+    
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        return false
     }
     
 }
@@ -140,4 +145,8 @@ class TenView: UIStackView {
             }
         }
     }
+    
+//    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+//        return false
+//    }
 }
