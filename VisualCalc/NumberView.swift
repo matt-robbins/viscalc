@@ -10,6 +10,7 @@ import UIKit
 
 protocol NumberDelegate: class {
     func addNumber(_ view: NumberVisualView)
+    func splitNumber(_ view: NumberView)
     func dragMove(_ view: NumberView, point: CGPoint)
     func dragStart(_ view: NumberView, point: CGPoint)
     func dragEnd(_ view: NumberView, point: CGPoint)
@@ -113,6 +114,12 @@ class NumberVisualView: UIStackView {
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         N = base
         setup()
+    }
+    
+    func split()
+    {
+        print("split")
+        addDelegate?.splitNumber(superview as! NumberView)
     }
     
     
@@ -322,6 +329,11 @@ class NumberView: UIStackView, NumberTextDelegate {
             self.visView.editing = false
             self.digitView.plusLabel.isHidden = true
         })
+    }
+    
+    func split()
+    {
+        visView.split()
     }
     
     var isSelected: Bool = false {

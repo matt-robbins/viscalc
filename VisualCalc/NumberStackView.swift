@@ -61,36 +61,65 @@ class NumberStackView: UIStackView, NumberDelegate, NewNumberDelegate {
         }, completion: nil)
     }
     
+    func splitNumber(_ view: NumberView) {
+        let ix = arrangedSubviews.index(of: view)
+        if (ix == nil) { return }
+        if (view.visView.space?.isHidden ?? true)
+        {
+            return
+        }
+        let n = NumberView()
+        n.editing = false
+        insertArrangedSubview(n, at: ix! + 1)
+        n.visView.removeArrangedSubview(n.visView.arrangedSubviews.last!)
+        var move = false
+        for v in view.visView.arrangedSubviews {
+            
+            if (move)
+            {
+                v.removeFromSuperview()
+                v.frame = n.visView.convert(v.frame, from: v.superview)
+                n.visView.addArrangedSubview(v)
+            }
+            if (v == view.visView.space)
+            {
+                move = true
+            }
+        }
+        n.visView.ones = n.visView.arrangedSubviews.last as? TenView
+        view.visView.ones = view.visView.arrangedSubviews.last as? TenView
+        n.didFinishEntering(n.visView)
+    }
+    
     func dragStart(_ view: NumberView, point: CGPoint) {
         UIView.animate(withDuration: 0.1, animations: {
             view.isHidden = true
+        }, completion: { (finished: Bool) in
+
         })
         view.isHidden = false
+        
         self.removeArrangedSubview(view)
-        superview?.addSubview(view)
-        superview?.bringSubviewToFront(view)
-        view.layer.position.y = 10
         
         let w = view.frame.width
         let h = view.frame.height
-        print("hi!!!!!")
+        view.frame = CGRect(x: 50, y: 0, width: w, height: h)
         
-//        view.addConstraint(NSLayoutConstraint(item: view,
-//                                                      attribute: .width,
-//                                                      relatedBy: .equal,
-//                                                      toItem: nil,
-//                                                      attribute: .width,
-//                                                      multiplier: 0.9,
-//                                                      constant: w*0.9))
+        
+        self.superview?.addSubview(view)
+        self.superview?.bringSubviewToFront(view)
+        
+//        for c in view.constraints {
+//            c.isActive = false
+//        }
         
         view.addConstraint(NSLayoutConstraint(item: view,
-                                                    attribute: .height,
-                                                    relatedBy: .equal,
-                                                    toItem: nil,
-                                                    attribute: .height,
-                                                    multiplier: 0.9,
-                                                    constant: h))
-        dragMove(view, point: point)
+                                              attribute: .height,
+                                              relatedBy: .equal,
+                                              toItem: nil,
+                                              attribute: .height,
+                                              multiplier: 0.9,
+                                              constant: h*0.8))
     }
     
     func dragMove(_ view: NumberView, point: CGPoint) {
@@ -101,6 +130,7 @@ class NumberStackView: UIStackView, NumberDelegate, NewNumberDelegate {
         view.layer.position = p
         
         print(point)
+        view.isHidden = false
         
         for v in self.arrangedSubviews {
             print(v)
@@ -176,9 +206,29 @@ class NumberStackView: UIStackView, NumberDelegate, NewNumberDelegate {
                 vv.space!.isHidden = false
             })
         }
+        else {
+            
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let curr = self.hitTest(touches.first!.location(in: self), with: event)
+        let nv = curr?.superview?.superview as? NumberView
+        
+        if (nv != nil)
+        {
+            nv!.split()
+        }
+        
+        for v in arrangedSubviews {
+            let nv = v as? NumberView
+            
+            UIView.animate(withDuration: 0.1, animations: {
+                nv?.visView.space?.isHidden = true
+            })
+            
+        }
+        
         
     }
 }
